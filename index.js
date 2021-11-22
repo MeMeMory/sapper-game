@@ -1,6 +1,5 @@
 const gameBody = document.querySelector('.game-body');
 let flags = 0;
-let squares = [];
 let isGameOver = false;
 
 document.querySelector('.start').addEventListener('click', createBoard);
@@ -37,62 +36,79 @@ function createBoard() {
 		};
 	}
 
-	bodySize(width);
-
-	function bodySize() {
-		if (width === 1) {
+	switch (width) {
+		case 1:
 			gameBody.classList.remove("x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9", "x10", "EROR");
 			gameBody.classList.add('x1');
-		} else if (width === 2) {
+			break;
+		case 2:
 			gameBody.classList.remove("x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9", "x10", "EROR");
 			gameBody.classList.add('x2');
-		} else if (width === 3) {
+			break;
+		case 3:
 			gameBody.classList.remove("x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9", "x10", "EROR");
 			gameBody.classList.add('x3');
-		} else if (width === 4) {
+			break;
+		case 4:
 			gameBody.classList.remove("x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9", "x10", "EROR");
 			gameBody.classList.add('x4');
-		} else if (width === 5) {
+			break;
+		case 5:
 			gameBody.classList.remove("x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9", "x10", "EROR");
 			gameBody.classList.add('x5');
-		} else if (width === 6) {
+			break;
+		case 6:
 			gameBody.classList.remove("x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9", "x10", "EROR");
 			gameBody.classList.add('x6');
-		} else if (width === 7) {
+			break;
+		case 7:
 			gameBody.classList.remove("x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9", "x10", "EROR");
 			gameBody.classList.add('x7');
-		} else if (width === 8) {
+			break;
+		case 8:
 			gameBody.classList.remove("x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9", "x10", "EROR");
 			gameBody.classList.add('x8');
-		} else if (width === 9) {
+			break;
+		case 9:
 			gameBody.classList.remove("x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9", "x10", "EROR");
 			gameBody.classList.add('x9');
-		} else if (width === 10) {
+			break;
+		case 10:
 			gameBody.classList.remove("x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9", "x10", "EROR");
 			gameBody.classList.add('x10');
-		} else {
+			break;
+		default:
 			gameBody.classList.remove("x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9", "x10", "EROR");
 			gameBody.classList.add('EROR');
 			squares = [];
 			gameBody.innerHTML = `<h1>Введите значение в диапазоне от 1 до 10 </h1>`;
-		}
+			break;
 	}
+
+	const isTopLeftSide = (width + 1);
+	const isTopRightSide = (width - 1);
+	const isTopSide = (width);
+	const isleftSide = (0);
+	const isRightSide = ((width * width) - 2);
+	const isBottomLeftSide = ((width * width) - width);
+	const isBottomRightSide = ((width * width) - (width + 2));
+	const isBottomSide = ((width * width) - (width + 1));
 
 	//add numbers
 	for (let i = 0; i < squares.length; i++) {
 		let total = 0;
-		const isleftEdge = (i % width === 0);
-		const isRigthEdge = (i % width === width - 1);
+		const isLeftEdge = (i % width === 0);
+		const isRightEdge = (i % width === width - 1);
 
 		if (squares[i].classList.contains('valid')) {
-			if (i > 0 && !isleftEdge && squares[i - 1].classList.contains('bomb')) total++;
-			if (i > 9 && !isRigthEdge && squares[i + 1 - width].classList.contains('bomb')) total++;
-			if (i > 10 && squares[i - width].classList.contains('bomb')) total++;
-			if (i > 11 && !isleftEdge && squares[i - 1 - width].classList.contains('bomb')) total++;
-			if (i < 98 && !isRigthEdge && squares[i + 1].classList.contains('bomb')) total++;
-			if (i < 90 && !isleftEdge && squares[i - 1 + width].classList.contains('bomb')) total++;
-			if (i < 88 && !isRigthEdge && squares[i + 1 + width].classList.contains('bomb')) total++;
-			if (i < 89 && squares[i + width].classList.contains('bomb')) total++;
+			if (i > isleftSide && !isLeftEdge && squares[i - 1].classList.contains('bomb')) total++;
+			if (i > isTopRightSide && !isRightEdge && squares[i + 1 - width].classList.contains('bomb')) total++;
+			if (i >= isTopSide && squares[i - width].classList.contains('bomb')) total++;
+			if (i >= isTopLeftSide && !isLeftEdge && squares[i - 1 - width].classList.contains('bomb')) total++;
+			if (i <= isRightSide && !isRightEdge && squares[i + 1].classList.contains('bomb')) total++;
+			if (i < isBottomLeftSide && !isLeftEdge && squares[i - 1 + width].classList.contains('bomb')) total++;
+			if (i <= isBottomRightSide && !isRightEdge && squares[i + 1 + width].classList.contains('bomb')) total++;
+			if (i <= isBottomSide && squares[i + width].classList.contains('bomb')) total++;
 			squares[i].setAttribute('data', total);
 		}
 	}
@@ -104,7 +120,7 @@ function addFlag(square) {
 	if (!square.classList.contains('checked') && (flags < bombAmount)) {
 		if (!square.classList.contains('flag')) {
 			square.classList.add('flag');
-			square.innerHTML = '<img src="https://img.icons8.com/external-kiranshastry-solid-kiranshastry/64/000000/external-flag-casino-kiranshastry-solid-kiranshastry.png"/>';
+			square.innerHTML = '🚩';
 			flags++;
 			checkForWin();
 		} else {
@@ -122,7 +138,7 @@ function click(squere) {
 	if (isGameOver) return;
 	if (squere.classList.contains('checked') || squere.classList.contains('flag')) return;
 	if (squere.classList.contains('bomb')) {
-		gameOver(squere)
+		gameOver(squere);
 	} else {
 		let total = squere.getAttribute('data');
 
@@ -137,12 +153,12 @@ function click(squere) {
 	squere.classList.add('checked');
 }
 
-//check neighbouring squares once square is clicked
-function checkSquare(square, currentId) {
-	const isleftEdge = (currentId % width === 0);
+//check neighbouring squres once square is clicked
+function checkSquare(squere, currentId, width) {
+	const isLeftEdge = (currentId % width === 0);
 	const isRightEdge = (currentId % width === width - 1);
 	setTimeout(() => {
-		if (currentId > 0 && !isleftEdge) {
+		if (currentId > 0 && !isLeftEdge) {
 			const newId = squares[parseInt(currentId) - 1].id;
 			const newSquare = document.getElementById(newId);
 			click(newSquare);
@@ -157,7 +173,7 @@ function checkSquare(square, currentId) {
 			const newSquare = document.getElementById(newId);
 			click(newSquare);
 		}
-		if (currentId > 11 && !isleftEdge) {
+		if (currentId > 11 && !isLeftEdge) {
 			const newId = squares[parseInt(currentId) - 1 - width].id;
 			const newSquare = document.getElementById(newId);
 			click(newSquare);
@@ -167,7 +183,7 @@ function checkSquare(square, currentId) {
 			const newSquare = document.getElementById(newId);
 			click(newSquare);
 		}
-		if (currentId < 90 && !isleftEdge) {
+		if (currentId < 90 && !isLeftEdge) {
 			const newId = squares[parseInt(currentId) - 1 + width].id;
 			const newSquare = document.getElementById(newId);
 			click(newSquare);
@@ -206,7 +222,7 @@ function checkForWin() {
 		}
 		if (matches === bombAmount) {
 			console.log('YOU WIN!');
-			isGameOver = true;
+			// isGameOver = true;
 			return;
 		}
 	}
