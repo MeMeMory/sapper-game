@@ -1,17 +1,18 @@
 const gameBody = document.querySelector('.game-body');
 const resultOfGame = document.querySelector('.result');
-let flags = 0;
-let isGameOver = false;
 
+let isGameOver = false;
+let flags = 0;
 
 document.querySelector('.start').addEventListener('click', createBoard);
 
 //create Board
 function createBoard() {
+	flags = 0;
 	isGameOver = false;
 	resultOfGame.innerHTML = ``;
-	gameBody.innerHTML = '';
-	const bombAmount = document.querySelector('.bomb').value * 1;
+	let bombAmount = document.querySelector('.bomb').value * 1;
+
 	const width = document.querySelector('.width').value * 1;
 	const isTopLeftSide = (width + 1);
 	const isTopRightSide = (width - 1);
@@ -28,6 +29,7 @@ function createBoard() {
 	const gameArray = emptyArray.concat(bombsArray);
 	const shuffledArray = gameArray.sort(() => Math.random() - 0.5);
 	squares = [];
+	gameBody.innerHTML = '';
 
 	for (let i = 0; i < width * width; i++) {
 		let square = document.createElement('div');
@@ -120,17 +122,17 @@ function createBoard() {
 //add Flag with right click
 function addFlag(square, bombAmount) {
 	if (isGameOver) return;
-	if (!square.classList.contains('checked') && (flags < bombAmount)) {
-		if (!square.classList.contains('flag')) {
-			square.classList.add('flag');
-			square.innerHTML = '🚩';
-			flags++;
-			checkForWin(bombAmount);
-		} else {
-			square.classList.remove('flag');
-			square.innerHTML = '';
-			flags--;
-		}
+
+	const squereHasFlag = square.classList.contains('flag');
+	if (squereHasFlag) {
+		square.classList.remove('flag');
+		square.innerHTML = '';
+		flags--;
+	} else if (!square.classList.contains('checked') && flags < bombAmount) {
+		square.classList.add('flag');
+		square.innerHTML = '🚩';
+		flags++;
+		checkForWin(bombAmount);
 	}
 }
 
@@ -143,7 +145,6 @@ function click(squere) {
 	if (squere.classList.contains('bomb')) {
 		isGameOver = true;
 		gameOver(squere);
-
 	} else {
 		let total = squere.getAttribute('data');
 
@@ -220,7 +221,7 @@ function checkSquare(squere, currentId) {
 function gameOver(squre) {
 	if (isGameOver) {
 		resultOfGame.innerHTML = `
-		<h2>You Lose!</h2>
+		<h2>You Lose</h2>
 	`;
 	}
 
@@ -246,3 +247,40 @@ function checkForWin(bombAmount) {
 		}
 	}
 }
+
+
+// function Sapper() {
+	
+// 	const uiElements = {
+// 		boombsInput: null,
+// 		widthInput: null,
+// 		startButton: null,
+// 		boardContainer: null
+// 	};
+
+// 	const gameSetting = {
+
+// 	};
+
+// 	function initUiElements() {
+// 		uiElements.boardContainer = document.querySelector('.game-body');
+
+// 	}
+
+// 	function subscribeToEvents() {
+// 		uiElements.startButton.addEventListener('click', createBoard);
+// 	}
+
+// 	function createBoard() {
+		
+// 	}
+
+// 	function init() {
+// 		initUiElements();
+// 		subscribeToEvents();
+// 	}
+
+// 	init();
+// }
+
+// new Sapper();
