@@ -1,13 +1,26 @@
 const gameBody = document.querySelector('.game-body');
+const resultOfGame = document.querySelector('.result');
 let flags = 0;
 let isGameOver = false;
+
 
 document.querySelector('.start').addEventListener('click', createBoard);
 
 //create Board
 function createBoard() {
+	isGameOver = false;
+	resultOfGame.innerHTML = ``;
+	gameBody.innerHTML = '';
 	const bombAmount = document.querySelector('.bomb').value * 1;
 	const width = document.querySelector('.width').value * 1;
+	const isTopLeftSide = (width + 1);
+	const isTopRightSide = (width - 1);
+	const isTopSide = (width);
+	const isleftSide = (0);
+	const isRightSide = ((width * width) - 2);
+	const isBottomLeftSide = ((width * width) - width);
+	const isBottomRightSide = ((width * width) - (width + 2));
+	const isBottomSide = ((width * width) - (width + 1));
 
 	//get shuffled game aaray with ramdom bombs
 	const bombsArray = Array(bombAmount).fill('bomb');
@@ -15,7 +28,6 @@ function createBoard() {
 	const gameArray = emptyArray.concat(bombsArray);
 	const shuffledArray = gameArray.sort(() => Math.random() - 0.5);
 	squares = [];
-	gameBody.innerHTML = '';
 
 	for (let i = 0; i < width * width; i++) {
 		let square = document.createElement('div');
@@ -32,7 +44,7 @@ function createBoard() {
 		// //cntrl and left click
 		square.oncontextmenu = function (e) {
 			e.preventDefault();
-			addFlag(square);
+			addFlag(square, bombAmount);
 		};
 	}
 
@@ -85,15 +97,6 @@ function createBoard() {
 			break;
 	}
 
-	const isTopLeftSide = (width + 1);
-	const isTopRightSide = (width - 1);
-	const isTopSide = (width);
-	const isleftSide = (0);
-	const isRightSide = ((width * width) - 2);
-	const isBottomLeftSide = ((width * width) - width);
-	const isBottomRightSide = ((width * width) - (width + 2));
-	const isBottomSide = ((width * width) - (width + 1));
-
 	//add numbers
 	for (let i = 0; i < squares.length; i++) {
 		let total = 0;
@@ -115,14 +118,14 @@ function createBoard() {
 }
 
 //add Flag with right click
-function addFlag(square) {
+function addFlag(square, bombAmount) {
 	if (isGameOver) return;
 	if (!square.classList.contains('checked') && (flags < bombAmount)) {
 		if (!square.classList.contains('flag')) {
 			square.classList.add('flag');
 			square.innerHTML = '🚩';
 			flags++;
-			checkForWin();
+			checkForWin(bombAmount);
 		} else {
 			square.classList.remove('flag');
 			square.innerHTML = '';
@@ -133,12 +136,14 @@ function addFlag(square) {
 
 //click on square actions
 function click(squere) {
-	let currentID = squere.id;
+	let currentId = squere.id;
 
 	if (isGameOver) return;
 	if (squere.classList.contains('checked') || squere.classList.contains('flag')) return;
 	if (squere.classList.contains('bomb')) {
+		isGameOver = true;
 		gameOver(squere);
+
 	} else {
 		let total = squere.getAttribute('data');
 
@@ -148,63 +153,76 @@ function click(squere) {
 			return;
 		}
 
-		checkSquare(squere, currentID);
+		checkSquare(squere, currentId);
 	}
 	squere.classList.add('checked');
 }
 
-//check neighbouring squres once square is clicked
-function checkSquare(squere, currentId, width) {
+//check neighbouring squeres once square is clicked
+function checkSquare(squere, currentId) {
+	const width = document.querySelector('.width').value * 1;
 	const isLeftEdge = (currentId % width === 0);
 	const isRightEdge = (currentId % width === width - 1);
+	const isTopLeftSide = (width + 1);
+	const isTopRightSide = (width - 1);
+	const isTopSide = (width);
+	const isleftSide = (0);
+	const isRightSide = ((width * width) - 2);
+	const isBottomLeftSide = ((width * width) - width);
+	const isBottomRightSide = ((width * width) - (width + 2));
+	const isBottomSide = ((width * width) - (width + 1));
+
 	setTimeout(() => {
-		if (currentId > 0 && !isLeftEdge) {
+		if (currentId > isleftSide && !isLeftEdge) {
 			const newId = squares[parseInt(currentId) - 1].id;
 			const newSquare = document.getElementById(newId);
 			click(newSquare);
 		}
-		if (currentId > 9 && !isRightEdge) {
+		if (currentId > isTopRightSide && !isRightEdge) {
 			const newId = squares[parseInt(currentId) + 1 - width].id;
 			const newSquare = document.getElementById(newId);
 			click(newSquare);
 		}
-		if (currentId > 10) {
+		if (currentId >= isTopSide) {
 			const newId = squares[parseInt(currentId) - width].id;
 			const newSquare = document.getElementById(newId);
 			click(newSquare);
 		}
-		if (currentId > 11 && !isLeftEdge) {
+		if (currentId >= isTopLeftSide && !isLeftEdge) {
 			const newId = squares[parseInt(currentId) - 1 - width].id;
 			const newSquare = document.getElementById(newId);
 			click(newSquare);
 		}
-		if (currentId < 98 && !isRightEdge) {
+		if (currentId <= isRightSide && !isRightEdge) {
 			const newId = squares[parseInt(currentId) + 1].id;
 			const newSquare = document.getElementById(newId);
 			click(newSquare);
 		}
-		if (currentId < 90 && !isLeftEdge) {
+		if (currentId < isBottomLeftSide && !isLeftEdge) {
 			const newId = squares[parseInt(currentId) - 1 + width].id;
 			const newSquare = document.getElementById(newId);
 			click(newSquare);
 		}
-		if (currentId < 88 && !isRightEdge) {
+		if (currentId <= isBottomRightSide && !isRightEdge) {
 			const newId = squares[parseInt(currentId) + 1 + width].id;
 			const newSquare = document.getElementById(newId);
 			click(newSquare);
 		}
-		if (currentId < 89) {
+		if (currentId <= isBottomSide) {
 			const newId = squares[parseInt(currentId) + width].id;
 			const newSquare = document.getElementById(newId);
 			click(newSquare);
 		}
-	}, 0);
+	}, 25);
 }
 
 //game over
 function gameOver(squre) {
-	console.log("BOOM!");
-	// isGameOver = true;
+	if (isGameOver) {
+		resultOfGame.innerHTML = `
+		<h2>You Lose!</h2>
+	`;
+	}
 
 	//show ALL the bombs
 	squares.forEach(squre => {
@@ -214,15 +232,16 @@ function gameOver(squre) {
 	});
 }
 
-function checkForWin() {
+function checkForWin(bombAmount) {
 	let matches = 0;
 	for (let i = 0; i < squares.length; i++) {
 		if (squares[i].classList.contains('flag') && squares[i].classList.contains('bomb')) {
 			matches++;
 		}
 		if (matches === bombAmount) {
-			console.log('YOU WIN!');
-			// isGameOver = true;
+			resultOfGame.innerHTML = `
+				<h2>You Win!</h2>
+			`;
 			return;
 		}
 	}

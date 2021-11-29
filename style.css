@@ -4,9 +4,10 @@
 	box-sizing: border-box;
 }
 
-body {
+body,
+html {
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 14px;
+	font-size: 10px;
 	min-height: 100vh;
 	display: flex;
 	align-items: center;
@@ -16,14 +17,13 @@ body {
 .container {
 	max-width: 100%;
 	height: 100%;
-	margin: 0 2rem;
+	margin: 5rem 2rem;
+	min-height: 60rem;
 }
 
 .game-body {
+	display: none;
 	background: rgb(107, 106, 69);
-	width: 0px;
-	height: 0px;
-	display: flex;
 	flex-wrap: wrap;
 	align-content: flex-start;
 	margin: 0 auto;
@@ -31,58 +31,68 @@ body {
 }
 
 .game-body.x1 {
-	width: 50px;
-	height: 50px;
+	display: flex;
+	width: 5rem;
+	height: 5rem;
 }
 
 .game-body.x2 {
-	width: 90px;
-	height: 90px;
+	display: flex;
+	width: 9rem;
+	height: 9rem;
 }
 
 .game-body.x3 {
-	width: 130px;
-	height: 130px;
+	display: flex;
+	width: 13rem;
+	height: 13rem;
 }
 
 .game-body.x4 {
-	width: 170px;
-	height: 170px;
+	display: flex;
+	width: 17rem;
+	height: 17rem;
 }
 
 .game-body.x5 {
-	width: 210px;
-	height: 210px;
+	display: flex;
+	width: 21rem;
+	height: 21rem;
 }
 
 .game-body.x6 {
-	width: 250px;
-	height: 250px;
+	display: flex;
+	width: 25rem;
+	height: 25rem;
 }
 
 .game-body.x7 {
-	width: 290px;
-	height: 290px;
+	display: flex;
+	width: 29rem;
+	height: 29rem;
 }
 
 .game-body.x8 {
-	width: 330px;
-	height: 330px;
+	display: flex;
+	width: 33rem;
+	height: 33rem;
 }
 
 .game-body.x9 {
-	width: 370px;
-	height: 370px;
+	display: flex;
+	width: 37rem;
+	height: 37rem;
 }
 
 .game-body.x10 {
-	width: 410px;
-	height: 410px;
+	display: flex;
+	width: 41rem;
+	height: 41rem;
 }
 
 .game-body.EROR {
-	width: 320px;
-	height: 100px;
+	width: 32rem;
+	height: 10rem;
 	align-content: center;
 	border: none;
 }
@@ -97,16 +107,13 @@ body {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 40px;
-	height: 40px;
+	width: 4rem;
+	height: 4rem;
+	font-size: 1.4rem;
 	border: 5px solid;
 	border-image: linear-gradient(to right bottom, rgb(184, 182, 132) 50%, rgb(80, 85, 61) 50%);
 	border-image-slice: 1;
 	cursor: default;
-}
-
-.game-body .bomb {
-	background: #000;
 }
 
 img {
@@ -135,8 +142,16 @@ img {
 .start {
 	display: block;
 	margin: 0 auto;
-	border: 1px solid darkblue;
+	border: 1px solid rgb(139, 79, 0);
 	padding: 5px;
 	border-radius: 5px;
 	margin-bottom: 25px;
+	background: rgba(131, 128, 25, 0.302);
+}
+
+.result h2 {
+	margin-top: 5rem;
+	text-align: center;
+	font-size: 24px;
+
 }
