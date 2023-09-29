@@ -90,14 +90,15 @@ html {
 	height: 41rem;
 }
 
-.game-body.EROR {
+.game-body.ERROR {
+	display: flex;
 	width: 32rem;
 	height: 10rem;
 	align-content: center;
 	border: none;
 }
 
-.game-body.EROR h1 {
+.game-body.ERROR h1 {
 	text-align: center;
 	padding: 5px;
 	color: rgb(237, 216, 133);
@@ -111,7 +112,11 @@ html {
 	height: 4rem;
 	font-size: 1.4rem;
 	border: 5px solid;
-	border-image: linear-gradient(to right bottom, rgb(184, 182, 132) 50%, rgb(80, 85, 61) 50%);
+	border-image: linear-gradient(
+		to right bottom,
+		rgb(184, 182, 132) 50%,
+		rgb(80, 85, 61) 50%
+	);
 	border-image-slice: 1;
 	cursor: default;
 }
@@ -153,5 +158,4 @@ img {
 	margin-top: 5rem;
 	text-align: center;
 	font-size: 24px;
-
 }
