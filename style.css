@@ -50,13 +50,14 @@
 	border: 1px solid gray;
 }
 
-.input-desc {
+.settings-desc {
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
+	margin-bottom: 1rem;
 }
 
-.input-desc p {
+.settings-desc p {
 	font-size: 1.5rem;
 	line-height: 1.1;
 	font-style: italic;

@@ -3,6 +3,7 @@ const createBoard = () => {
 	const size = Number(document.querySelector('.width').value)
 	const gameBoard = document.querySelector('.board')
 	const res = document.querySelector('.result > h2')
+	let flags = 0
 
 	if (mines > size * size) {
 		isWinAction('Enter correct mine count')
@@ -73,6 +74,7 @@ const createBoard = () => {
 		if (board[x][y].revealed) return
 
 		board[x][y].revealed = true
+		gameBoard.querySelector(`#cell-${x}-${y}`).classList.add('open')
 
 		if (board[x][y].value === 'bomb') {
 			isWinAction('You Lose =(')
@@ -126,8 +128,15 @@ const createBoard = () => {
 	const addFlag = (x, y, cell) => {
 		if (board[x][y].revealed) return
 
-		board[x][y].flag = !board[x][y].flag
-		cell.innerHTML === '' ? (cell.innerHTML = '🚩') : (cell.innerHTML = '')
+		if (flags < mines && board[x][y].flag !== true) {
+			board[x][y].flag = true
+			cell.innerHTML = '🚩'
+			flags++
+		} else if (board[x][y].flag === true) {
+			board[x][y].flag = false
+			cell.innerHTML = ''
+			flags--
+		}
 
 		if (!!checkIsWin()) isWinAction('You Win!!!')
 	}
