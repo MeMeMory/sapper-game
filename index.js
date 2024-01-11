@@ -114,6 +114,8 @@ const createBoard = () => {
 				if (board[x][y].revealed) {
 					cell.textContent = board[x][y].value === 0 ? '' : board[x][y].value
 				} else {
+					// /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+					// 	navigator.userAgent
 					cell.addEventListener('click', () => revealCell(x, y))
 					cell.oncontextmenu = e => {
 						e.preventDefault()
